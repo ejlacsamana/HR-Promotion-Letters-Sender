@@ -22,19 +22,18 @@ class EmailConnect:
                 typ_data, msg_data = self.server.fetch(email_id, "(RFC822)")
                 for response_part in msg_data:
                     if isinstance(response_part, tuple):
-                        msg = email.message_from_bytes(response_part[1])
-                        for part in msg.walk():
-                            if part.get_content_disposition() is not None:
-                                filename = part.get_filename()
-                                if filename:
-                                    filepath = os.path.join(
-                                        './attachments', filename)
-                                    with open(filepath, "wb") as f:
-                                        f.write(part.get_payload(decode=True))
-                                    return "Downloaded attachment"
+                        self.msg = email.message_from_bytes(response_part[1])
+                        return self.msg
 
     def downloadAttachment(self):
-        pass
+        for part in self.msg.walk():
+            if part.get_content_disposition() is not None:
+                filename = part.get_filename()
+                if filename:
+                    filepath = os.path.join('./attachments', filename)
+                    with open(filepath, "wb") as f:
+                        f.write(part.get_payload(decode=True))
+                        return "Downloaded attachment"
 
 
 emailing = EmailConnect()
