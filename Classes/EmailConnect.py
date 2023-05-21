@@ -9,6 +9,8 @@ class EmailConnect:
         self.username = "ejlacsamana.dev@gmail.com"
         self.password = "qpbdkzojhykmkevh"
         self.server = imaplib.IMAP4_SSL("imap.gmail.com", 993)
+
+    def login(self):
         self.login = self.server.login(self.username, self.password)
 
     def scrapeInbox(self):
